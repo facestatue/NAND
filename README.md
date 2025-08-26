@@ -1,4 +1,4 @@
-# NAND
+# NAND v0.1.1
 A short pygame demo (that will be expanded upon) that showcases the power of NAND in a graph theory inspired format.
 
 ## Instructions for use
@@ -11,8 +11,6 @@ To disconnect two nodes, perform the same procedure with right click.
 Press `3` for "create" mode. Click anywhere to add another node. Right click to delete a node.
 
 Press `4` for "move" mode. Click and hold to move a node.
-
-Press `SPACE` to update the nodes. Later, automatic updating of the nodes per frame (or an equivalant time frame) will be added.
 
 Press `R` to clear the entire board.
 
