@@ -8,6 +8,8 @@ Press `2` for "connection" mode. Click on a node to mark it for connection, and 
 
 Press `3` for "create" mode. Click anywhere to add another node.
 
+Press `SPACE` to update the nodes. Later, automatic updating of the nodes per frame (or an equivalant time frame) will be added.
+
 ## Packages/Installation
 Fairly simple- just run "main.py". As for packages:
 - `numpy 2.3.2`
