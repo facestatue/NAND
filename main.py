@@ -1,6 +1,7 @@
 import bezier
 import numpy as np
 import pygame
+import pickle
 from dataclasses import dataclass
 
 # Bezier curve helper functions
@@ -42,9 +43,16 @@ class World(object):
     def add_node(self, pos):
         self.nodes.append(Node([], [], pos, len(self.nodes), False))
 
+    def remove_node(self, uuid: int):
+        self.nodes.pop(uuid)
+
     def connect_nodes(self, node_sender: int, node_receiver: int):
         self.nodes[node_sender].out_connections.append(node_receiver)
         self.nodes[node_receiver].in_connections.append(node_sender)
+
+    def disconnect_nodes(self, node_sender: int, node_receiver: int):
+        self.nodes[node_sender].out_connections.remove(node_receiver)
+        self.nodes[node_receiver].in_connections.remove(node_sender)
 
     def update_nodes(self):
         next_step = self.nodes
@@ -75,6 +83,19 @@ while running:
             if event.key == pygame.K_ESCAPE:
                 running = False
 
+            if event.key == pygame.K_s:
+                savefile = input("Save to file: ")
+                file = open(f"{savefile}.bin", "wb+")
+                pickle.dump(world.nodes, file)
+                file.close()
+                running = False
+
+            if event.key == pygame.K_l:
+                savefile = input("Load from file: ")
+                file = open(f"{savefile}.bin", 'rb')
+                world.nodes = pickle.load(file)
+                file.close()
+
             if event.key == pygame.K_1:
                 tool = "modify"
 
@@ -84,23 +105,41 @@ while running:
             if event.key == pygame.K_3:
                 tool = "add"
 
+            if event.key == pygame.K_4:
+                tool = "move"
+
+            if event.key == pygame.K_r:
+                world.nodes = []
+
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_SPACE:
                 world.update_nodes()
 
-        elif event.type == pygame.MOUSEBUTTONDOWN:
+        elif event.type == pygame.MOUSEBUTTONUP:
             if event.button == 1:
-                selected_node = None
-                for node in world.nodes:
-                    dx = abs(event.pos[0] - node.pos[0])
-                    dy = abs(event.pos[1] - node.pos[1])
-                    distance = round((dx ** 2 + dy ** 2) ** 0.5)
-                    if distance < 10:
-                        selected_node = node
-                        break
+                if tool == "move":
+                    held_node = None
 
+        elif event.type == pygame.MOUSEMOTION:
+            if tool == "move" and held_node:
+                held_node.pos = event.pos
+
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            selected_node = None
+            for node in world.nodes:
+                dx = abs(event.pos[0] - node.pos[0])
+                dy = abs(event.pos[1] - node.pos[1])
+                distance = round((dx ** 2 + dy ** 2) ** 0.5)
+                if distance < 10:
+                    selected_node = node
+                    break
+
+            if event.button == 1:
                 if tool == "add":
                     world.add_node(event.pos)
+
+                if tool == "move" and held_node:
+                    held_node.pos = event.pos
 
                 if selected_node:
                     if tool == "connection":
@@ -114,6 +153,22 @@ while running:
                     if tool == "modify":
                         selected_node.status = not selected_node.status
 
+                    if tool == "move":
+                        held_node = selected_node
+                        held_node.pos = event.pos
+
+            elif event.button == 3:
+                if selected_node:
+                    if tool == "add":
+                        world.remove_node(selected_node.uuid)
+
+                    if tool == "connection":
+                        if held_node == None:
+                            held_node = selected_node
+
+                        else:
+                            world.disconnect_nodes(held_node.uuid, selected_node.uuid)
+                            held_node = None
 
 
     screen.fill("black")
