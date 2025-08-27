@@ -42,5 +42,5 @@ Fairly simple- just run "main.py". As for packages:
 - `numpy 2.3.2`
 - `bezier 2024.6.20`
 - `pygame 2.6.1`
-  
+
 This project also uses `pickle` and `dataclasses`.
