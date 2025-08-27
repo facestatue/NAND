@@ -144,21 +144,20 @@ while running:
                     mouse_pos = pygame.mouse.get_pos()
                     cloned_dx = select_rect.center[0] - mouse_pos[0]
                     cloned_dy = select_rect.center[1] - mouse_pos[1]
-                    uuid_offset = world.current_uuid + 5
-                    node_uuids = [node.uuid for node in selected_nodes]
+                    node_uuids = {node.uuid: world.current_uuid + i for i, node in enumerate(selected_nodes)}
                     for node in selected_nodes:
                         world.nodes.append(Node(
-                            [n + uuid_offset for n in node.out_connections],
-                            [n + uuid_offset for n in node.in_connections],
+                            [node_uuids[n] for n in node.out_connections],
+                            [node_uuids[n] for n in node.in_connections],
                             (node.pos[0] - cloned_dx, node.pos[1] - cloned_dy),
-                            world.current_uuid + 5,
+                            node_uuids[node.uuid],
                             node.status
                         ))
                         world.current_uuid += 1
 
                     select_rect.center = (select_rect.center[0] - cloned_dx, select_rect.center[1] - cloned_dy)
-                    selected_nodes = world.nodes[-len(node_uuids):]
-                    
+                    selected_nodes = world.nodes[-len(node_uuids.keys()):]
+
             if event.key == pygame.K_r:
                 world.nodes = []
 
