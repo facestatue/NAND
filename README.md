@@ -1,4 +1,4 @@
-# NAND v0.2.0
+# NAND v0.2.1
 A short pygame demo (that will be expanded upon) that showcases the power of NAND in a graph theory inspired format.
 
 ## Instructions for use
