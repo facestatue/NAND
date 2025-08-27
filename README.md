@@ -1,4 +1,4 @@
-# NAND v0.1.1
+# NAND v0.2.0
 A short pygame demo (that will be expanded upon) that showcases the power of NAND in a graph theory inspired format.
 
 ## Instructions for use
@@ -12,11 +12,24 @@ Press `3` for "create" mode. Click anywhere to add another node. Right click to 
 
 Press `4` for "move" mode. Click and hold to move a node.
 
+Press `5` for "select" mode. See below for more details
+
 Press `R` to clear the entire board.
 
 Press `S` to save the current board to the directory the `main.py` file is located in. When pressed, a default python input prompt will appear in your terminal.
 
 Press `L` to load a file from the directory the `main.py` file is located in. When pressed, a default python input prompt will appear in your terminal.
+
+### Select mode
+In "select" mode, a variety of functions are available to you.
+
+Click and drag the selection to move it around.
+
+Press `C` to create a clone of the selected nodes and their connections at the cursor's position.
+
+Press `X` to delete all selected nodes.
+
+Click out of the selection box to deselect.
 
 ### Instructions
 A node's color is its "status". When an update happens, every node will take the statuses of the nodes that are connected to it 
@@ -30,4 +43,4 @@ Fairly simple- just run "main.py". As for packages:
 - `bezier 2024.6.20`
 - `pygame 2.6.1`
 
-This also uses `pickle` and `dataclasses`.
+This project also uses `pickle` and `dataclasses`.
